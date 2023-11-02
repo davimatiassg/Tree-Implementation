@@ -86,6 +86,15 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 	
+	public int getEmptySubTreeAmount()
+	{
+		int amount = 0;
+		if (getLeft() == null) amount ++;
+		if (getRight() == null) amount ++;
+		
+		return amount;
+	}
+	
 	public boolean add(T value) 
 	{
 		int comparison = value.compareTo(this.value);
