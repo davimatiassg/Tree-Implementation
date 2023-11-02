@@ -158,25 +158,6 @@ public class Tree<T extends Comparable<T>> {
 				
 			break;
 		}
-		
-		/*
-		Tree<T> removal = search(value);
-		Tree<T> removalRoot = removal.getRoot();
-		Tree<T> removalLeft = removal.getLeft();
-		Tree<T> removalRight = removal.getRight();
-		//TODO
-		if(removal == null) { return; }
-		if(removalLeft != null) 
-		{
-			removal = removal.getLeft();
-			while(removal.getRight() != null) 
-			{
-				removal = removal.getLeft();
-			}
-			removal.setRoot(removalRoot);
-			if(removalRoot != null) { removalRoot.setLeft(removal); }
-		}
-		*/
 	}
 	
 	
