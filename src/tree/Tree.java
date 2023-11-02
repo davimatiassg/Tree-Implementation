@@ -99,7 +99,7 @@ public class Tree<T extends Comparable<T>> {
 	{
 		int comparison = value.compareTo(this.value);
 		
-		if(comparison == 0) { return false; }
+		if(comparison == 0) return false;
 		
 		Tree<T> nextTree = comparison < 0 ? this.leftTree : this.rightTree;
 		
@@ -160,7 +160,7 @@ public class Tree<T extends Comparable<T>> {
 			case 0:
 				
 				Tree<T> successor = findSucessor(victim);
-				if (successor == null) { return; }
+				if (successor == null) return;
 				Tree<T> nextTree = successor.getRight() == null ? successor.getLeft() : successor.getRight();
 				
 				//TODO
@@ -184,8 +184,8 @@ public class Tree<T extends Comparable<T>> {
 	{
 		int comparison = value.compareTo(this.value);
 		Tree<T> nextTree = comparison < 0 ? leftTree : rightTree;
-		if(comparison == 0) { return this; }
-		if(nextTree == null) { return null; }
+		if(comparison == 0) return this;
+		if(nextTree == null) return null;
 		return nextTree.search(value);
 	}
 	
