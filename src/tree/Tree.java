@@ -80,7 +80,7 @@ public class Tree<T extends Comparable<T>> {
 	
 	public void updateHeight(Tree<T> nextTree)
 	{
-		if(nextTree.getHeight()+1 >= this.height)
+		if(nextTree.getHeight() + 1 >= this.height)
 		{
 			this.height++;
 		}
@@ -97,8 +97,13 @@ public class Tree<T extends Comparable<T>> {
 		if(nextTree == null) 
 		{
 			nextTree = new Tree<T>(value, this);
-			if(comparison > 0) { this.setRight(nextTree);}
-			else { this.setLeft(nextTree); }
+			if(comparison > 0)
+			{
+				this.setRight(nextTree)
+			}
+			else {
+				this.setLeft(nextTree);
+			}
 			updateHeight(nextTree);
 			return true;
 		}
@@ -116,18 +121,25 @@ public class Tree<T extends Comparable<T>> {
 		switch(victim.getEmptySubTreeAmount())
 		{
 			case 2:
-				if (v > 0) {
+				if (v > 0)
+				{
 					victim.getRoot().setRight(null);
-				} else {victim.getRoot().setLeft(null);}
+				} else {
+					victim.getRoot().setLeft(null);
+				}
 				victim = null;
 			break;
 			
 			case 1:
-				if (v > 0) {
+				if (v > 0)
+				{
 					victim.getRoot().setLeft(null);
-				} else {victim.getRoot().setLeft(null);}
+				} else {
+					victim.getRoot().setLeft(null);
+				}
 				
-				if (victim.getLeft() == null) {
+				if (victim.getLeft() == null)
+				{
 					victim.getRight().setRoot(victim.getRoot());
 				}
 				else {
