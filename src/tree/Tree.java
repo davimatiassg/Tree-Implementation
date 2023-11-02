@@ -86,15 +86,6 @@ public class Tree<T extends Comparable<T>> {
 		}
 	}
 	
-	public int getEmptySubTreeAmount()
-	{
-		int amount = 0;
-		if (getLeft() == null) amount ++;
-		if (getRight() == null) amount ++;
-		
-		return amount;
-	}
-	
 	public boolean add(T value) 
 	{
 		int comparison = value.compareTo(this.value);
@@ -196,10 +187,14 @@ public class Tree<T extends Comparable<T>> {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	private int getEmptySubTreeAmount() {
-		// TODO Auto-generated method stub
-		return 0;
+	
+	private int getEmptySubTreeAmount()
+	{
+		int amount = 0;
+		if (getLeft() == null) amount ++;
+		if (getRight() == null) amount ++;
+		
+		return amount;
 	}
 
 	public Tree<T> search(T value) 
