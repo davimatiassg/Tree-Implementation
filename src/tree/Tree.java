@@ -159,18 +159,40 @@ public class Tree<T extends Comparable<T>> {
 			
 			case 0:
 				
-				Tree<T> successor = findSucessor(victim);
-				if (successor == null) return;
-				Tree<T> nextTree = successor.getRight() == null ? successor.getLeft() : successor.getRight();
+				Tree<T> eligible = findEligible(victim);
+				if (eligible == null) return;
 				
-				//TODO
+				victim.getValue() = eligible.getValue();
+					
+				// the eligible becomes the new victim
+				
+				Tree<T> eligiblesRoot = eligible.getRoot();
+				
+				if (eligible.getValue().compareTo(eligiblesRoot.getValue()) < 1)
+				{
+					eligiblesRoot.setLeft(null);
+				}
+				else {
+					eligiblesRoot.setRight(null);
+				}
+				
+				// in case the eligible has children
+				
+				Tree<T> nextTree = eligible.getRight() == null ? eligible.getLeft() : eligible.getRight();
+				
+				if (nextTree != null)
+				{
+					nextTree.SetRoot(eligible.getRoot());
+				}
+				
+				eligible = null;
 				
 			break;
 		}
 	}
 	
 	
-	private Tree<T> findSucessor(Tree<T> victim) {
+	private Tree<T> findEligible(Tree<T> victim) {
 		// TODO Auto-generated method stub
 		return null;
 	}
