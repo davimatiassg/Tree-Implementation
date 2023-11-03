@@ -20,6 +20,7 @@ public class TreeView {
 		//System.out.println(tree.mediana());
 		//System.out.println(tree.media(35));
 		System.out.println(tree.isFull());
+		System.out.println(tree.isComplete());
 		/*
 		
 		
@@ -66,11 +67,11 @@ public class TreeView {
 		BinaryTree<Integer> t = new BinaryTree<Integer>(50);
 		t.add(35);
 		t.add(25);
-		//t.add(30);
+		t.add(30);
 		t.add(70);
 		t.add(40);
 		t.add(65);
-		//t.add(80);
+		t.add(80);
 		t.add(90);
 		//t.add(100);
 		//t.add(101);
