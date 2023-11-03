@@ -382,6 +382,31 @@ public class BinaryTree<T extends Comparable<T>> {
 		return 1.0;
 	}
 	
+	public boolean isFull() // MetalAlchemist
+	{
+		boolean b[] = {true};
+		isFullRecursive(b);
+		return b[0];
+	}
+	
+	private void isFullRecursive(boolean b[])
+	{
+		if (!b[0]) return;
+		
+		if (leftExists() && rightExists()) {
+			getLeft().isFullRecursive(b);
+			getRight().isFullRecursive(b);
+			return;
+		}
+		else {
+			if (leftExists() || rightExists()) { // one of them is missing, not ok
+				b[0] = false;
+				return;
+			}
+			return; // neither of them exist, ok
+		}
+	}
+	
 	private boolean leftExists() {
 		return getLeft() != null;
 	}
