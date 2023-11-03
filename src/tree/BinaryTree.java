@@ -124,6 +124,12 @@ public class BinaryTree<T extends Comparable<T>> {
 		BinaryTree<T> t1right = t1.getRight();
 		BinaryTree<T> t2right = t2.getRight();
 
+		if(t1.getValue().compareTo(t1root.getValue()) < 0) t1root.setLeft(t2);
+		else t1root.setRight(t2);
+
+		if(t2.getValue().compareTo(t2root.getValue()) < 0) t2root.setLeft(t1);
+		else t2root.setRight(t1);
+
 		t1.setRoot(t2root);
 		t2.setRoot(t1root);
 
@@ -133,16 +139,16 @@ public class BinaryTree<T extends Comparable<T>> {
 		t1.setRight(t2right);
 		t2.setRight(t1right);
 
-		if (t1left != null) t1left.setRoot(t2);
+		if (t1.getLeft() != null) t1.getLeft().setRoot(t1);
+		if (t2.getLeft() != null) t2.getLeft().setRoot(t2);
+		if (t1.getRight() != null) t1.getRight().setRoot(t1);
+		if (t2.getRight() != null) t2.getRight().setRoot(t2);
 
-		if (t2left != null) t2left.setRoot(t1);
+		if(t1.getRoot() == t2) t1.setRoot(t1);
+		if(t2.getRoot() == t1) t2.setRoot(t2);
 
-		if (t1right != null) t1right.setRoot(t2);
+		
 
-		if (t2right != null) t2right.setRoot(t1);
-
-		if(t1.getRoot() == t2){t1.setRoot(t1);}
-		if(t2.getRoot() == t1){t2.setRoot(t2);}
 		t1.updateHeight();
 		t2.updateHeight();
 	}
@@ -171,59 +177,52 @@ public class BinaryTree<T extends Comparable<T>> {
 		if(this.getHeight() - nextTree.getHeight() <= 1) updateHeight();
 		return inserted;
 	}
-/*
-	public Boolean remove(T value) throws Throwable
-	{
-		if(value.compareTo(this.value) == 0)
-		{
-			removeChildTree(this.root, );
-		}
-	}
 
-	public Boolean recRemove(T value, int LastComparison) throws Throwable
-	{
+	public Boolean remove(T value) throws Throwable
+	{	
 		if(value == null) return false;
 		int comparison = value.compareTo(this.value);
-		BinaryTree<T> nextTree = comparison < 0 ? leftTree : rightTree;
-		System.out.println("hello: " + value);
-		if(comparison != 0)
-		{
-			System.out.println("hello: " + value);
-			Boolean success = nextTree.remove(value);
-			if(this.getHeight() - nextTree.getHeight() > 1) updateHeight();
-			return success;
+		if(comparison == 0){ 
+			getRoot().removeChildTree(this, value.compareTo(getRoot().value) < 0);
+			return true;
 		}
-		this.getRoot().removeChildTree(nextTree, value.compareTo(this.getRoot().getValue()) < 0 );
-		return true; 
+		BinaryTree<T> nextTree = comparison < 0 ? this.leftTree : this.rightTree;
+		System.out.println("hello: " + this.value);
+		Boolean success = nextTree.remove(value);
+		if(this.getHeight() - nextTree.getHeight() > 1) updateHeight();
+		return success;
+
 	}
 
-	public void removeChildTree(BinaryTree<T> nextTree, Boolean isLeftChild) throws Throwable
+
+
+	public void removeChildTree(BinaryTree<T> nextTree, Boolean deleteLeft) throws Throwable
 	{
 		switch(nextTree.getEmptySubTreeAmount())
 		{
-			case 2:
-				if (isLeftChild)	setLeft(null);
-				else				setRight(null);
-				updateHeight();
-				nextTree.finalize();
-			break;
-			case 1:
-				BinaryTree<T> nextNextTree = nextTree.getLeft() != null ? nextTree.getLeft() : nextTree.getRight();
-				nextNextTree.setRoot(this);
-				if(isLeftChild)	setLeft(nextNextTree);
-				else			setRight(nextNextTree);
-				updateHeight();
-				nextTree.finalize();
-			break;
-			case 0:
-				BinaryTree<T> eligible = findEligible(nextTree);
-				swapTree(eligible, nextTree);
-				removeChildTree(nextTree, nextTree.getRoot().getLeft() == nextTree);
-			break;
+		case 2:
+			if (deleteLeft)	setLeft(null);
+			else			setRight(null);
+			nextTree.finalize();
+			updateHeight();
+			return;
+		case 1:
+			BinaryTree<T> nextNextTree = (nextTree.getLeft() != null ? nextTree.getLeft() : nextTree.getRight());
+			nextNextTree.setRoot(this);
+			if(deleteLeft)	setLeft(nextNextTree);
+			else			setRight(nextNextTree);
+			nextTree.finalize();
+			updateHeight();
+			return;
+		case 0:
+			BinaryTree<T> eligible = findEligible(nextTree);
+			swapTree(eligible, nextTree);
+			nextTree.getRoot().removeChildTree(nextTree, nextTree.getValue().compareTo(nextTree.getRoot().getValue()) < 0);
+			return;
 		}
 	}
 
-	*/
+
 	private BinaryTree<T> findEligible(BinaryTree<T> victim) {
 		
 		BinaryTree<T> eligible = null;
@@ -360,6 +359,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		if(leftTree != null) { s += leftTree.toString(dashes); }
 		if(rightTree != null) { s += rightTree.toString(dashes); }
 		return s;
+
 	}
 	
 	public String toStringWithHeight() {

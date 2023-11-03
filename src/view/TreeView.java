@@ -17,14 +17,13 @@ public class TreeView {
 		
 		//System.out.println(tree.enesimoElemento(6));
 		//
-		System.out.println(tree.mediana());
+		/*System.out.println(tree.mediana());
 		
 		
-		/*
+		
 		BinaryTree<Integer> search = tree.search(90);
 		System.out.println(search.toString()); 
 		*/
-		/*
 		System.out.println("Rm30");
 		BinaryTree<Integer> rm30 = defaultBinaryTree();
 		try {
@@ -53,9 +52,9 @@ public class TreeView {
 			System.out.println("AAAAAAAAAAAAAAA");
 			e.printStackTrace();
 		}
-		//while(rm50.getRoot() != rm50) rm50 = rm50.getRoot();
+		while(rm50.getRoot() != rm50) rm50 = rm50.getRoot();
 		System.out.println(rm50.toString());
-		*/
+		
 	} 
 
 	public static BinaryTree<Integer> defaultBinaryTree()
@@ -69,7 +68,7 @@ public class TreeView {
 		t.add(65);
 		t.add(80);
 		t.add(90);
-		t.add(91);
+		
 		return t;
 	}
 	
