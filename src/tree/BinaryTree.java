@@ -348,12 +348,14 @@ public class BinaryTree<T extends Comparable<T>> {
 		return enesimoElemento(v + 1);
 	}
 	
-	public double media()
+	public double media(T value)
 	{
+		BinaryTree<T> b = search(value);
+		
 		double sum = 0;
 		double n[] = {0};
 		
-		sum = somaRecursive(n);
+		sum = b.somaRecursive(n);
 		
 		return sum/n[0];
 	}
