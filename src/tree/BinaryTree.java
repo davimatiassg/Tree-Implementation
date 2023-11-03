@@ -86,7 +86,7 @@ public class BinaryTree<T extends Comparable<T>> {
 				this.height = 1 + (getLeft().getValue().compareTo(getRight().getValue()) > 0 ? getLeft().getHeight() : getRight().getHeight());
 				break;
 			case 1:
-				this.height = 1 + (getLeft() != null ? getLeft().getHeight() : getRight().getHeight());
+				this.height = 1 + (leftExists() ? getLeft().getHeight() : getRight().getHeight());
 				break;
 			case 2:
 				this.height = 1;
@@ -139,10 +139,10 @@ public class BinaryTree<T extends Comparable<T>> {
 		t1.setRight(t2right);
 		t2.setRight(t1right);
 
-		if (t1.getLeft() != null) t1.getLeft().setRoot(t1);
-		if (t2.getLeft() != null) t2.getLeft().setRoot(t2);
-		if (t1.getRight() != null) t1.getRight().setRoot(t1);
-		if (t2.getRight() != null) t2.getRight().setRoot(t2);
+		if (t1.leftExists()) t1.getLeft().setRoot(t1);
+		if (t2.leftExists()) t2.getLeft().setRoot(t2);
+		if (t1.rightExists()) t1.getRight().setRoot(t1);
+		if (t2.rightExists()) t2.getRight().setRoot(t2);
 
 		if(t1.getRoot() == t2) t1.setRoot(t1);
 		if(t2.getRoot() == t1) t2.setRoot(t2);
@@ -207,7 +207,7 @@ public class BinaryTree<T extends Comparable<T>> {
 			updateHeight();
 			return;
 		case 1:
-			BinaryTree<T> nextNextTree = (nextTree.getLeft() != null ? nextTree.getLeft() : nextTree.getRight());
+			BinaryTree<T> nextNextTree = (nextTree.leftExists() ? nextTree.getLeft() : nextTree.getRight());
 			nextNextTree.setRoot(this);
 			if(deleteLeft)	setLeft(nextNextTree);
 			else			setRight(nextNextTree);
@@ -227,7 +227,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		
 		BinaryTree<T> eligible = null;
 		
-		if(victim.getLeft() != null)
+		if(victim.leftExists())
 		{ 
 			eligible = victim.getLeft();
 			while(eligible.getRight() != null)
@@ -237,7 +237,7 @@ public class BinaryTree<T extends Comparable<T>> {
 			return eligible;
 		}
 
-		if(victim.getRight() != null)
+		if(victim.rightExists())
 		{ 
 			eligible = victim.getRight();
 			while(eligible.getLeft() != null)
@@ -253,8 +253,8 @@ public class BinaryTree<T extends Comparable<T>> {
 	private int getEmptySubTreeAmount()
 	{
 		int amount = 0;
-		if (getLeft() == null) amount ++;
-		if (getRight() == null) amount ++;
+		if (!leftExists()) amount ++;
+		if (!rightExists()) amount ++;
 		
 		return amount;
 	}
@@ -277,13 +277,13 @@ public class BinaryTree<T extends Comparable<T>> {
 	private T enesimoElementoRecursive(int n[])
 	{
 		T v = null;
-		if (getLeft() != null) v = getLeft().enesimoElementoRecursive(n);
+		if (leftExists()) v = getLeft().enesimoElementoRecursive(n);
 		if (n[0] == 0) return v;
 
 		n[0] --;
 		if (n[0] == 0) return value;
 
-		if (getRight() != null) v = getRight().enesimoElementoRecursive(n);
+		if (rightExists()) v = getRight().enesimoElementoRecursive(n);
 		if (n[0] == 0) return v;
 
 		return null;
@@ -298,7 +298,7 @@ public class BinaryTree<T extends Comparable<T>> {
 	private int posicaoRecursive(T value, int n[])
 	{
 		int i = 0;
-		if (getLeft() != null) i = getLeft().posicaoRecursive(value, n);
+		if (leftExists()) i = getLeft().posicaoRecursive(value, n);
 		if (n[0] == -1) return i;
 
 		n[0] ++;
@@ -309,7 +309,7 @@ public class BinaryTree<T extends Comparable<T>> {
 			return tmp;
 		}
 
-		if (getRight() != null) i = getRight().posicaoRecursive(value, n);
+		if (rightExists()) i = getRight().posicaoRecursive(value, n);
 		if (n[0] == -1) return i;
 
 		return i;
@@ -324,28 +324,36 @@ public class BinaryTree<T extends Comparable<T>> {
 	private String preOrderRecursive(String s)
 	{
 		s += " " + getValue().toString();
-		if (getLeft() != null) s += getLeft().preOrder();
-		if (getRight() != null) s += getRight().preOrder();
+		if (leftExists()) s += getLeft().preOrder();
+		if (rightExists()) s += getRight().preOrder();
 		return s;
 	}
 	
 	public int getChildAmount()
 	{
 		int v = 0;
-		if (getLeft() != null) v += 1 + getLeft().getChildAmount();
-		if (getRight() != null) v += 1 + getRight().getChildAmount();
+		if (leftExists()) v += 1 + getLeft().getChildAmount();
+		if (rightExists()) v += 1 + getRight().getChildAmount();
 		return v;
 	}
 
 	public T mediana()
 	{
-		int v = 1 + (getLeft() != null ? 1 + getLeft().getChildAmount() : 0) + 
-				(getRight() != null ? 1 + getRight().getChildAmount() : 0);
+		int v = 1 + (leftExists() ? 1 + getLeft().getChildAmount() : 0) + 
+				(rightExists() ? 1 + getRight().getChildAmount() : 0);
 
 		if (v % 2 == 0) v = v/2 - 1;
 		else v = v/2;
 
 		return enesimoElemento(v + 1);
+	}
+	
+	private boolean leftExists() {
+		return getLeft() != null;
+	}
+	
+	private boolean rightExists() {
+		return getRight() != null;
 	}
 
 	@Override
