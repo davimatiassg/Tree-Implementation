@@ -348,6 +348,38 @@ public class BinaryTree<T extends Comparable<T>> {
 		return enesimoElemento(v + 1);
 	}
 	
+	public double media()
+	{
+		double sum = 0;
+		double n[] = {0};
+		
+		sum = somaRecursive(n);
+		
+		return sum/n[0];
+	}
+	
+	private double somaRecursive(double n[])
+	{
+		double sum = valueAsDouble();
+		n[0] ++;
+		if (leftExists()) sum += getLeft().somaRecursive(n);
+		if (rightExists()) sum += getRight().somaRecursive(n);
+		return sum;
+	}
+	
+	public double valueAsDouble() {
+		/*
+		try {
+			Double v = (double) value;
+			return v;
+		}
+		catch(ClassCastException e) {
+			return 1.0;
+		}
+		*/
+		return 1.0;
+	}
+	
 	private boolean leftExists() {
 		return getLeft() != null;
 	}

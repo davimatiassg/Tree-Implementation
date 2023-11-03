@@ -18,6 +18,7 @@ public class TreeView {
 		//System.out.println(tree.enesimoElemento(6));
 		//
 		System.out.println(tree.mediana());
+		System.out.println(tree.media());
 		/*
 		
 		
