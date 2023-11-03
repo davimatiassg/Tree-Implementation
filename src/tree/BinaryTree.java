@@ -342,9 +342,10 @@ public class BinaryTree<T extends Comparable<T>> {
 		int v = 1 + (getLeft() != null ? 1 + getLeft().getChildAmount() : 0) + 
 				(getRight() != null ? 1 + getRight().getChildAmount() : 0);
 
-		v = v/2;
+		if (v % 2 == 0) v = v/2 - 1;
+		else v = v/2;
 
-		return enesimoElemento(v);
+		return enesimoElemento(v + 1);
 	}
 
 	@Override
