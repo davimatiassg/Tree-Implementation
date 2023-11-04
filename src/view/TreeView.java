@@ -3,6 +3,7 @@ package view;
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import tree.BinaryTree;
+import reader.TreeReader;
 
 public class TreeView {
 	
@@ -10,6 +11,9 @@ public class TreeView {
 	
 	public static void main(String[] args) 
 	{
+		
+		TreeReader.ReadBinaryTree(); ////////COMITAAAAAAAAAAAAA
+		
 		BinaryTree<Integer> tree = defaultBinaryTree();
 		
 		System.out.println(tree.toString(2));
