@@ -12,7 +12,7 @@ public class TreeView {
 	public static void main(String[] args) 
 	{
 		
-		TreeReader.ReadBinaryTree(); ////////COMITAAAAAAAAAAAAA
+		System.out.println(TreeReader.ReadBinaryTree().showTreeDashesWithHeight());
 		
 		BinaryTree<Integer> tree = defaultBinaryTree();
 		

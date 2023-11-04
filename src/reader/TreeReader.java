@@ -11,25 +11,30 @@ public class TreeReader {
 	{
 		try {
 		
-			File file = new File("a.txt");
+			File file = new File("binaryTree.txt");
 			Scanner reader = new Scanner(file);
 			
-			while (reader.hasNextLine())
+			BinaryTree<Integer> tree = null;
+			int data;
+			int i = 0; while (reader.hasNextLine())
 			{
-				String data = reader.nextLine();
-				System.out.println(data);
+				data = reader.nextInt();
+				
+				if (i == 0) tree = new BinaryTree<Integer>(data);
+				else tree.add(data);
+				
+				i ++;
 			}
 			
 			reader.close();
-		
+			
+			return tree;
 		}
 		catch(FileNotFoundException e) {
 			
 			System.out.println("No file found :(");
 			e.printStackTrace();
-			
+			return null;
 		}
-		
-		return null;
 	}
 }
