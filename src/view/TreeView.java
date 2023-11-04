@@ -19,7 +19,7 @@ public class TreeView {
 		
 		//System.out.println(tree.enesimoElemento(6));
 		//
-		//System.out.println(tree.calculateMedian());
+		System.out.println(tree.calculateMedian());
 		
 		try {
 			System.out.println(tree.calculateAverage(50));
