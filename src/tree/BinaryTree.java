@@ -254,13 +254,13 @@ public class BinaryTree<T extends Comparable<T>> {
 	private T findElementByIndexRecursive(int n[])
 	{
 		T v = null;
-		if (leftExists()) v = getLeft(). findElementByIndexRecursive(n);
+		if (leftExists()) v = getLeft().findElementByIndexRecursive(n);
 		if (n[0] == 0) return v;
 
 		n[0] --;
 		if (n[0] == 0) return value;
 
-		if (rightExists()) v = getRight(). findElementByIndexRecursive(n);
+		if (rightExists()) v = getRight().findElementByIndexRecursive(n);
 		if (n[0] == 0) return v;
 
 		return null;
