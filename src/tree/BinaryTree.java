@@ -425,8 +425,8 @@ public class BinaryTree<T extends Comparable<T>> {
 		spaces += "     ";	
 		dashes = dashes.substring(0, dashes.length() - 5);
 		String s = spaces + strV + dashes.substring(0, dashes.length() - strV.length()) + "\n";
-		if(leftTree != null) { s += leftTree.showTreeDashes(spaces, dashes); }
-		if(rightTree != null) { s += rightTree.showTreeDashes(spaces, dashes); }
+		if(leftExists()) { s += leftTree.showTreeDashes(spaces, dashes); }
+		if(rightExists()) { s += rightTree.showTreeDashes(spaces, dashes); }
 		return s;
 	}
 	
@@ -438,8 +438,8 @@ public class BinaryTree<T extends Comparable<T>> {
 	private String showTreeDashesWithHeightRecursive(String dashes) {
 		String s = this.height + dashes + value + "\n";
 		dashes += "-";
-		if(leftTree != null) { s += leftTree.showTreeDashesWithHeightRecursive(dashes); }
-		if(rightTree != null) { s += rightTree.showTreeDashesWithHeightRecursive(dashes); }
+		if(leftExists()) { s += leftTree.showTreeDashesWithHeightRecursive(dashes); }
+		if(rightExists()) { s += rightTree.showTreeDashesWithHeightRecursive(dashes); }
 		return s;
 	}
 	

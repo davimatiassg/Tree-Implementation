@@ -29,6 +29,7 @@ public class TreeView {
 		}
 		System.out.println(tree.isFull());
 		System.out.println(tree.isComplete());
+		System.out.println(tree.showTreeDashesWithHeight());
 		/*
 		
 		
