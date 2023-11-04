@@ -7,11 +7,11 @@ import java.util.Scanner;
 
 public class CommandReader {
 	
-	public static void readCommands(BinaryTree<Integer> tree)
+	public static void readCommands(String filename, BinaryTree<Integer> tree)
 	{		
 		try {
 			
-			File file = new File("Commands.txt");
+			File file = new File(filename);
 			Scanner reader = new Scanner(file);
 			
 			while (reader.hasNextLine())
