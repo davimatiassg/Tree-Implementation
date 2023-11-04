@@ -1,5 +1,8 @@
 package tree;
 import java.lang.Comparable;
+import java.text.DecimalFormat;
+
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 public class BinaryTree<T extends Comparable<T>> {
 	
@@ -91,28 +94,9 @@ public class BinaryTree<T extends Comparable<T>> {
 			case 2:
 				this.height = 1;
 				break;
-				
 		}
 	}
-/*
-	public void updateHeightOfRoot()
-	{
-		BinaryTree<T> root = this.getRoot();
-		System.out.println("up");
-		if(this.height < root.getHeight()-1) 
-		{
-			if(root.getEmptySubTreeAmount() == 0)
-			if(root.getEmptySubTreeAmount() == 1)
-			{
-				root.setHeight(this.height+1);
-				return;
-			}
-			
-			BinaryTree<T> highest = root.getLeft().getValue().compareTo(root.getLeft().getValue()) > 0? root.getLeft() : root.getRight();
-			root.setHeight(highest.getHeight()+1);
-		};
-	}
-*/
+
 	public void swapTree(BinaryTree<T> t1, BinaryTree<T> t2)
 	{
 		if(t1 == null || t2 == null) return;
@@ -146,8 +130,6 @@ public class BinaryTree<T extends Comparable<T>> {
 
 		if(t1.getRoot() == t2) t1.setRoot(t1);
 		if(t2.getRoot() == t1) t2.setRoot(t2);
-
-		
 
 		t1.updateHeight();
 		t2.updateHeight();
@@ -194,8 +176,6 @@ public class BinaryTree<T extends Comparable<T>> {
 
 	}
 
-
-
 	public void removeChildTree(BinaryTree<T> nextTree, Boolean deleteLeft) throws Throwable
 	{
 		switch(nextTree.getEmptySubTreeAmount())
@@ -224,9 +204,7 @@ public class BinaryTree<T extends Comparable<T>> {
 
 
 	private BinaryTree<T> findEligible(BinaryTree<T> victim) {
-		
 		BinaryTree<T> eligible = null;
-		
 		if(victim.leftExists())
 		{ 
 			eligible = victim.getLeft();
@@ -246,7 +224,6 @@ public class BinaryTree<T extends Comparable<T>> {
 			}
 			return eligible;
 		}
-		
 		return null;
 	}
 
@@ -268,37 +245,37 @@ public class BinaryTree<T extends Comparable<T>> {
 		return nextTree.search(value);
 	}
 
-	public T enesimoElemento(int n)
+	public T findElementByIndex(int n)
 	{
 		int n_[] = {n};
-		return enesimoElementoRecursive(n_);
+		return findElementByIndexRecursive(n_);
 	}
 
-	private T enesimoElementoRecursive(int n[])
+	private T findElementByIndexRecursive(int n[])
 	{
 		T v = null;
-		if (leftExists()) v = getLeft().enesimoElementoRecursive(n);
+		if (leftExists()) v = getLeft(). findElementByIndexRecursive(n);
 		if (n[0] == 0) return v;
 
 		n[0] --;
 		if (n[0] == 0) return value;
 
-		if (rightExists()) v = getRight().enesimoElementoRecursive(n);
+		if (rightExists()) v = getRight(). findElementByIndexRecursive(n);
 		if (n[0] == 0) return v;
 
 		return null;
 	}
 
-	public int posicao(T value)
+	public int findIndexByElement(T value)
 	{
 		int n_[] = {0};
-		return posicaoRecursive(value, n_);
+		return findIndexByElementRecursive(value, n_);
 	}
 
-	private int posicaoRecursive(T value, int n[])
+	private int findIndexByElementRecursive(T value, int n[])
 	{
 		int i = 0;
-		if (leftExists()) i = getLeft().posicaoRecursive(value, n);
+		if (leftExists()) i = getLeft().findIndexByElementRecursive(value, n);
 		if (n[0] == -1) return i;
 
 		n[0] ++;
@@ -309,26 +286,12 @@ public class BinaryTree<T extends Comparable<T>> {
 			return tmp;
 		}
 
-		if (rightExists()) i = getRight().posicaoRecursive(value, n);
+		if (rightExists()) i = getRight().findIndexByElementRecursive(value, n);
 		if (n[0] == -1) return i;
 
 		return i;
 	}
 
-	public String preOrder()
-	{
-		String s = "";
-		return preOrderRecursive(s);
-	}
-
-	private String preOrderRecursive(String s)
-	{
-		s += " " + getValue().toString();
-		if (leftExists()) s += getLeft().preOrder();
-		if (rightExists()) s += getRight().preOrder();
-		return s;
-	}
-	
 	public int getChildAmount()
 	{
 		int v = 0;
@@ -337,7 +300,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		return v;
 	}
 
-	public T mediana()
+	public T calculateMedian()
 	{
 		int v = 1 + (leftExists() ? 1 + getLeft().getChildAmount() : 0) + 
 				(rightExists() ? 1 + getRight().getChildAmount() : 0);
@@ -345,41 +308,40 @@ public class BinaryTree<T extends Comparable<T>> {
 		if (v % 2 == 0) v = v/2 - 1;
 		else v = v/2;
 
-		return enesimoElemento(v + 1);
+		return findElementByIndex(v + 1);
 	}
 	
-	public double media(T value)
+	public double calculateAverage(T root) throws InvalidTargetObjectTypeException
 	{
-		BinaryTree<T> b = search(value);
-		
-		double sum = 0;
-		double n[] = {0};
-		
-		sum = b.somaRecursive(n);
-		
-		return sum/n[0];
+		return calculateAverage(search(root));
 	}
-	
-	private double somaRecursive(double n[])
+
+	public double calculateAverage(BinaryTree<T> root) throws InvalidTargetObjectTypeException
 	{
-		double sum = valueAsDouble();
-		n[0] ++;
-		if (leftExists()) sum += getLeft().somaRecursive(n);
-		if (rightExists()) sum += getRight().somaRecursive(n);
-		return sum;
+		if(!(root.getValue() instanceof Number)){
+			String s = "Class '" + root.getValue().getClass().getSimpleName() + "' cannot be asserted to a number type.";
+			throw new InvalidTargetObjectTypeException(s);
+		}
+
+		Double averageParcels[] = {((Number) root.getValue()).doubleValue(), 1.0};
+		root.calculateAverageRecursive(averageParcels);		
+		return averageParcels[0]/averageParcels[1];
 	}
-	
-	public double valueAsDouble() {
-		/*
-		try {
-			Double v = (double) value;
-			return v;
+
+	private void calculateAverageRecursive(Double averageParcels[])
+	{
+		if (leftExists())
+		{
+			averageParcels[1]++;
+			averageParcels[0] += ((Number)getLeft().getValue()).doubleValue();
+			getLeft().calculateAverageRecursive(averageParcels);
 		}
-		catch(ClassCastException e) {
-			return 1.0;
+		if (rightExists())
+		{
+			averageParcels[1]++;
+			averageParcels[0] += ((Number) getRight().getValue()).doubleValue();
+			getRight().calculateAverageRecursive(averageParcels);
 		}
-		*/
-		return 1.0;
 	}
 	
 	public boolean isFull() // MetalAlchemist
@@ -396,7 +358,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		return b[0];
 	}
 	
-	public void isCompleteRecursive(boolean b[], boolean checkForFull)
+	private void isCompleteRecursive(boolean b[], boolean checkForFull)
 	{
 		if (!b[0]) return;
 		
@@ -416,10 +378,9 @@ public class BinaryTree<T extends Comparable<T>> {
 				else {
 					b[0] = false;
 				}
-				
 				return;
 			}
-			return; // neither of them exist, ok
+			return;
 		}
 	}
 	
@@ -434,31 +395,65 @@ public class BinaryTree<T extends Comparable<T>> {
 	@Override
 	public String toString() {
 		String s = "BinaryTree\n";
-		return s + toString("");
+		return s + showTreeDashes();
 	}
-	
-	public String toString(String dashes) {
-		String s = dashes + value + "\n";
-		dashes += "-";
-		if(leftTree != null) { s += leftTree.toString(dashes); }
-		if(rightTree != null) { s += rightTree.toString(dashes); }
-		return s;
 
+	public String toString(int i) {
+		String s = "BinaryTree\n" + "Root: " + this.getValue() + "\n";
+		if (i == 1) return showTreeDashes();
+		if (i == 2) return showTreeChain();
+		return "";
+	}
+
+	public String showTreeChain()
+	{
+		String s = "(" + this.getValue();
+		if(leftExists()) s += getLeft().showTreeChain();
+		if(rightExists()) s += getRight().showTreeChain();
+		return s+")";
+	}
+
+	public String showTreeDashes() { return showTreeDashes("", 
+	"_____________________________________________________"+
+	"_____________________________________________________"+
+	"_____________________________________________________"); }
+	
+	private String showTreeDashes(String spaces, String dashes) {
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		String strV = df.format(value).toString();
+		spaces += "     ";	
+		dashes = dashes.substring(0, dashes.length() - 5);
+		String s = spaces + strV + dashes.substring(0, dashes.length() - strV.length()) + "\n";
+		if(leftTree != null) { s += leftTree.showTreeDashes(spaces, dashes); }
+		if(rightTree != null) { s += rightTree.showTreeDashes(spaces, dashes); }
+		return s;
 	}
 	
-	public String toStringWithHeight() {
+	public String showTreeDashesWithHeight() {
 		String s = "BinaryTree\n";
-		return s + toStringWithHeight("-");
+		return s + showTreeDashesWithHeightRecursive("-");
 	}
 	
-	public String toStringWithHeight(String dashes) {
+	private String showTreeDashesWithHeightRecursive(String dashes) {
 		String s = this.height + dashes + value + "\n";
 		dashes += "-";
-		if(leftTree != null) { s += leftTree.toStringWithHeight(dashes); }
-		if(rightTree != null) { s += rightTree.toStringWithHeight(dashes); }
+		if(leftTree != null) { s += leftTree.showTreeDashesWithHeightRecursive(dashes); }
+		if(rightTree != null) { s += rightTree.showTreeDashesWithHeightRecursive(dashes); }
 		return s;
 	}
 	
-	
-	
+	public String toStringPreOrder()
+	{
+		String s = "";
+		return toStringPreOrderRecursive(s);
+	}
+
+	private String toStringPreOrderRecursive(String s)
+	{
+		s += " " + getValue().toString();
+		if (leftExists()) s += getLeft().toStringPreOrder();
+		if (rightExists()) s += getRight().toStringPreOrder();
+		return s;
+	}
 }

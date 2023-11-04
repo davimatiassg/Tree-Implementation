@@ -1,5 +1,7 @@
 package view;
 
+import javax.management.modelmbean.InvalidTargetObjectTypeException;
+
 import tree.BinaryTree;
 
 public class TreeView {
@@ -10,15 +12,21 @@ public class TreeView {
 	{
 		BinaryTree<Integer> tree = defaultBinaryTree();
 		
-		System.out.println(tree.toStringWithHeight());
+		System.out.println(tree.toString(2));
 		
 		
 		//System.out.println(tree.preOrder());
 		
 		//System.out.println(tree.enesimoElemento(6));
 		//
-		//System.out.println(tree.mediana());
-		//System.out.println(tree.media(35));
+		//System.out.println(tree.calculateMedian());
+		
+		try {
+			System.out.println(tree.calculateAverage(50));
+		} catch (InvalidTargetObjectTypeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println(tree.isFull());
 		System.out.println(tree.isComplete());
 		/*
