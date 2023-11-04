@@ -13,14 +13,17 @@ public class TreeView {
 	public static void main(String[] args) 
 	{
 		
-		System.out.println(TreeReader.ReadBinaryTree().showTreeDashesWithHeight());
+		System.out.println(TreeReader.ReadBinaryTree("binaryTree.txt").showTreeDashesWithHeight());
 		
 		BinaryTree<Integer> tree = defaultBinaryTree();
 		
 		System.out.println(tree.toString(2));
 		
+		System.out.println(" ");
+		
 		CommandReader.readCommands(tree);
 		
+		System.out.println(" ");
 		
 		//System.out.println(tree.preOrder());
 		

@@ -21,6 +21,7 @@ public class CommandReader {
 				int arg = 0;
 				
 				boolean readingCommand = true;
+				
 				// Finding 'command' and 'arg'
 				for (int i = 0;i < data.length();i ++)
 				{			

@@ -7,11 +7,11 @@ import java.util.Scanner;
 
 public class TreeReader {
 	
-	public static BinaryTree<Integer> ReadBinaryTree()
+	public static BinaryTree<Integer> ReadBinaryTree(String filename)
 	{
 		try {
 		
-			File file = new File("binaryTree.txt");
+			File file = new File(filename);
 			Scanner reader = new Scanner(file);
 			
 			BinaryTree<Integer> tree = null;
