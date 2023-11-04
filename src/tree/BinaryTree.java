@@ -311,19 +311,17 @@ public class BinaryTree<T extends Comparable<T>> {
 	}
 
 	public int getChildAmount()
-	{
-		/*
-		int v = 0;
-		if (leftExists()) v += 1 + getLeft().getChildAmount();
-		if (rightExists()) v += 1 + getRight().getChildAmount();
-		return v;
-		*/
-		
+	{	
 		return rightNodes + leftNodes;
 	}
 	
 	private void updateRootNodeCount(int leftOrRight)
 	{
+		if (this == getRoot())
+		{
+			return;
+		}
+		
 		if (leftOrRight == 0)
 		{
 			getRoot().leftNodes ++;
@@ -332,16 +330,12 @@ public class BinaryTree<T extends Comparable<T>> {
 			getRoot().rightNodes ++;
 		}
 		
-		if (getRoot() != getRoot().root)
-		{
-			getRoot().updateRootNodeCount(leftOrRight);
-		}
+		getRoot().updateRootNodeCount(leftOrRight);
 	}
 
 	public T calculateMedian()
 	{
-		int v = 1 + (leftExists() ? 1 + getLeft().getChildAmount() : 0) + 
-				(rightExists() ? 1 + getRight().getChildAmount() : 0);
+		int v = 1 + getChildAmount();	
 
 		if (v % 2 == 0) v = v/2 - 1;
 		else v = v/2;
