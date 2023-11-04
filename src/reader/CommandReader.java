@@ -17,12 +17,28 @@ public class CommandReader {
 			while (reader.hasNextLine())
 			{
 				String data = reader.nextLine();
-				
-				String command = "";
+				String command = "", argStr = "";
 				int arg = 0;
 				
-				executeCommand(tree, command, arg);
+				boolean readingCommand = true;
+				// Finding 'command' and 'arg'
+				for (int i = 0;i < data.length();i ++)
+				{			
+					char char_ = data.charAt(i);
+					
+					if (char_ == ' ')
+					{
+						readingCommand = false;
+					}
+					else {
+						if (readingCommand) command += char_;
+						else argStr += char_;
+					}
+				}
 				
+				if (argStr.length() > 0) arg = Integer.parseInt(argStr);
+				
+				executeCommand(tree, command, arg);
 			}
 			
 			reader.close();
@@ -36,19 +52,19 @@ public class CommandReader {
 	
 	private static void executeCommand(BinaryTree<Integer> tree, String command, int arg)
 	{
-		if (command == "MEDIANA") {
+		if (command.equals("MEDIANA")) {
 			System.out.println("Median: " + tree.calculateMedian());
 		}
 		
-		if (command == "IMPRIMA") {
+		if (command.equals("IMPRIMA")) {
 			System.out.println("???? tafuck is imprima");
 		}
 		
-		if (command == "ENESIMO") {
+		if (command.equals("ENESIMO")) {
 			System.out.println("Element at " + arg + ": " + tree.findElementByIndex(arg));
 		}
 		
-		if (command == "REMOVA") {
+		if (command.equals("REMOVA")) {
 			try {
 				tree.remove(arg);
 				System.out.println(arg + " Removed from tree: ");
@@ -61,15 +77,15 @@ public class CommandReader {
 			}
 		}
 		
-		if (command == "CHEIA") {
+		if (command.equals("CHEIA")) {
 			System.out.println("Is the tree full? " + tree.isFull());
 		}
 		
-		if (command == "COMPLETA") {
+		if (command.equals("COMPLETA")) {
 			System.out.println("Is the tree complete? " + tree.isComplete());
 		}
 		
-		if (command == "POSICAO") {
+		if (command.equals("POSICAO")) {
 			System.out.println("Position of " + arg + ": " + tree.search(arg));
 		}
 	}
