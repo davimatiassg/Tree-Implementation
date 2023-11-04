@@ -16,14 +16,16 @@ public class TreeReader {
 			
 			BinaryTree<Integer> tree = null;
 			int data;
-			int i = 0; while (reader.hasNextLine())
+			boolean first = true;
+			
+			while (reader.hasNextLine())
 			{
 				data = reader.nextInt();
 				
-				if (i == 0) tree = new BinaryTree<Integer>(data);
+				if (first) tree = new BinaryTree<Integer>(data);
 				else tree.add(data);
 				
-				i ++;
+				first = false;
 			}
 			
 			reader.close();
