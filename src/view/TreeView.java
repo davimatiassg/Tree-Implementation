@@ -4,6 +4,7 @@ import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
 import tree.BinaryTree;
 import reader.TreeReader;
+import reader.CommandReader;
 
 public class TreeView {
 	
@@ -17,6 +18,8 @@ public class TreeView {
 		BinaryTree<Integer> tree = defaultBinaryTree();
 		
 		System.out.println(tree.toString(2));
+		
+		CommandReader.readCommands(tree);
 		
 		
 		//System.out.println(tree.preOrder());
