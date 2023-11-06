@@ -55,10 +55,16 @@ public class CommandReader {
 	{
 		if (command.equals("MEDIANA")) {
 			System.out.println("Median: " + tree.calculateMedian());
+			return;
 		}
 		
 		if (command.equals("IMPRIMA")) {
-			System.out.println("???? tafuck is imprima");
+			
+			if(arg == 1 || arg == 2) 
+			{
+				System.out.println(tree.toString(arg));
+			}
+			System.out.println("Argument not coherent with this command.");
 		}
 		
 		if (command.equals("ENESIMO")) {
@@ -79,11 +85,13 @@ public class CommandReader {
 		}
 		
 		if (command.equals("CHEIA")) {
-			System.out.println("Is the tree full? " + tree.isFull());
+			if(tree.isFull()) System.out.println("The tree is a Full tree.");
+			else System.out.println("The tree is not Full.");
 		}
 		
 		if (command.equals("COMPLETA")) {
-			System.out.println("Is the tree complete? " + tree.isComplete());
+			if(tree.isComplete()) System.out.println("The tree is a Complete tree.");
+			else System.out.println("The tree is not Complete.");
 		}
 		
 		if (command.equals("POSICAO")) {
