@@ -93,19 +93,32 @@ public class BinaryTree<T extends Comparable<T>> {
 	public void setHeight(int height) {
 		this.height = height;
 	}
+
+	public int getChildAmount()
+	{	
+		return rightNodes + leftNodes;
+	}
+	
+	private void incrementNodeCount(boolean isleft)
+	{
+		if (isLeft)
+		{
+			leftNodes ++;
+			return;
+		}
+		rightNodes ++;
+	}
 	
 	public void updateHeight()
 	{
+		this.height = 1;
 		switch (getEmptySubTreeAmount())
 		{
 			case 0:
-				this.height = 1 + (getLeft().getValue().compareTo(getRight().getValue()) > 0 ? getLeft().getHeight() : getRight().getHeight());
+				this.height += (getLeft().getValue().compareTo(getRight().getValue()) > 0 ? getLeft().getHeight() : getRight().getHeight());
 				break;
 			case 1:
-				this.height = 1 + (leftExists() ? getLeft().getHeight() : getRight().getHeight());
-				break;
-			case 2:
-				this.height = 1;
+				this.height += (leftExists() ? getLeft().getHeight() : getRight().getHeight());
 				break;
 		}
 	}
@@ -147,13 +160,21 @@ public class BinaryTree<T extends Comparable<T>> {
 		t1.updateHeight();
 		t2.updateHeight();
 	}
+
+	public BinaryTree<T> search(T value) 
+	{
+		int comparison = value.compareTo(this.value);
+		BinaryTree<T> nextTree = comparison < 0 ? leftTree : rightTree;
+		if(comparison == 0) return this;
+		if(nextTree == null) return null;
+		return nextTree.search(value);
+	}
 	
 	public Boolean add(T value) 
 	{
 		int comparison = value.compareTo(this.value);
-		
 		if(comparison == 0) return false;
-		
+
 		BinaryTree<T> nextTree = comparison < 0 ? leftTree : rightTree;
 		if(nextTree == null) 
 		{
@@ -162,19 +183,20 @@ public class BinaryTree<T extends Comparable<T>> {
 			{
 				setRight(nextTree);
 				rightNodes ++;
-				updateRootNodeCount(1); // right node count
 			}
-			else {
+			else{
 				setLeft(nextTree);
 				leftNodes ++;
-				updateRootNodeCount(0); // left node count
 			}
 			updateHeight();
 			return true;
 		}
-		
 		Boolean inserted = nextTree.add(value);
-		if(getHeight() - nextTree.getHeight() <= 1) updateHeight();
+		if(inserted)
+		{
+			incrementNodeCount(comparison < 0);
+			if(getHeight() - nextTree.getHeight() <= 1) updateHeight();
+		}
 		return inserted;
 	}
 
@@ -187,7 +209,6 @@ public class BinaryTree<T extends Comparable<T>> {
 			return true;
 		}
 		BinaryTree<T> nextTree = comparison < 0 ? this.leftTree : this.rightTree;
-		System.out.println("hello: " + this.value);
 		Boolean success = nextTree.remove(value);
 		if(this.getHeight() - nextTree.getHeight() > 1) updateHeight();
 		return success;
@@ -220,7 +241,6 @@ public class BinaryTree<T extends Comparable<T>> {
 		}
 	}
 
-
 	private BinaryTree<T> findEligible(BinaryTree<T> victim) {
 		BinaryTree<T> eligible = null;
 		if(victim.leftExists())
@@ -248,19 +268,9 @@ public class BinaryTree<T extends Comparable<T>> {
 	private int getEmptySubTreeAmount()
 	{
 		int amount = 0;
-		if (!leftExists()) amount ++;
-		if (!rightExists()) amount ++;
-		
+		if (leftNodes == 0) amount ++;
+		if (rightNodes == 0) amount ++;
 		return amount;
-	}
-
-	public BinaryTree<T> search(T value) 
-	{
-		int comparison = value.compareTo(this.value);
-		BinaryTree<T> nextTree = comparison < 0 ? leftTree : rightTree;
-		if(comparison == 0) return this;
-		if(nextTree == null) return null;
-		return nextTree.search(value);
 	}
 
 	public T findElementByIndex(int n)
@@ -308,29 +318,6 @@ public class BinaryTree<T extends Comparable<T>> {
 		if (n[0] == -1) return i;
 
 		return i;
-	}
-
-	public int getChildAmount()
-	{	
-		return rightNodes + leftNodes;
-	}
-	
-	private void updateRootNodeCount(int leftOrRight)
-	{
-		if (this == getRoot())
-		{
-			return;
-		}
-		
-		if (leftOrRight == 0)
-		{
-			getRoot().leftNodes ++;
-		}
-		else {
-			getRoot().rightNodes ++;
-		}
-		
-		getRoot().updateRootNodeCount(leftOrRight);
 	}
 
 	public T calculateMedian()

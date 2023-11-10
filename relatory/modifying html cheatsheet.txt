@@ -1,0 +1,32 @@
+Processo de criação do HTML bonito com códigos:
+
+pegue o arquivo hmtl
+
+
+procure pela expressão </span>\s*\n
+
+substitua por </span> (e dê enter)
+
+procure pela expressão regular </span>\t*\n(?!\n*</code>)
+
+Adicione ao final dela <span class="codeline">
+
+procure pela expressão </span>\n
+
+substitua ela por </span></span>
+
+Adicione entre o \n e o </span> um outro </span>
+
+procure pela expressão <pre class=" language-java"><code class="prism  language-java">
+
+adicione <span class="codeline"> ao final dela
+
+procure por \t<span class="token punctuation">}</span>\n</span></code>
+
+substitua por <span class="token punctuation">}</span></span>
+</code>
+
+
+procure por </span>\n*\t*<span class="codeline">\t*<span class="token punctuation">{</span></span>
+
+substitua por <span class="token punctuation">{</span></span>
