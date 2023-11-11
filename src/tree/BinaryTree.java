@@ -109,6 +109,14 @@ public class BinaryTree<T extends Comparable<T>> {
 		rightNodes ++;
 	}
 	
+	private boolean leftExists() {
+		return getLeft() != null;
+	}
+	
+	private boolean rightExists() {
+		return getRight() != null;
+	}
+
 	public void updateHeight()
 	{
 		this.height = 1;
@@ -324,42 +332,43 @@ public class BinaryTree<T extends Comparable<T>> {
 	{
 		int v = 1 + getChildAmount();	
 
-		if (v % 2 == 0) v = v/2 - 1;
-		else v = v/2;
+		v =  (v % 2 == 0) ? v = v/2 - 1 : v = v/2;
 
 		return findElementByIndex(v + 1);
 	}
 	
 	public double calculateAverage(T root) throws InvalidTargetObjectTypeException
 	{
-		return calculateAverage(search(root));
+		BinaryTree rt = search(root);
+		if (rt == null) return -1;
+		return rt.calculateAverage();
 	}
 
-	public double calculateAverage(BinaryTree<T> root) throws InvalidTargetObjectTypeException
+	public double calculateAverage() throws InvalidTargetObjectTypeException
 	{
-		if(!(root.getValue() instanceof Number)){
-			String s = "Class '" + root.getValue().getClass().getSimpleName() + "' cannot be asserted to a number type.";
+		if(!(this.getValue() instanceof Number)){
+			String s = "Can not calculate the average of non-numeric values and Class '" + this.getValue().getClass().getSimpleName() + "' cannot be asserted to a numerical type.";
 			throw new InvalidTargetObjectTypeException(s);
 		}
 
-		Double averageParcels[] = {((Number) root.getValue()).doubleValue(), 1.0};
-		root.calculateAverageRecursive(averageParcels);		
+		Double averageParcels[] = {((Number) this.getValue()).doubleValue(), 1.0};
+		this.sumSubtrees(averageParcels);		
 		return averageParcels[0]/averageParcels[1];
 	}
 
-	private void calculateAverageRecursive(Double averageParcels[])
+	private void sumSubtrees(Double averageParcels[])
 	{
 		if (leftExists())
 		{
 			averageParcels[1]++;
 			averageParcels[0] += ((Number)getLeft().getValue()).doubleValue();
-			getLeft().calculateAverageRecursive(averageParcels);
+			getLeft().sumSubtrees(averageParcels);
 		}
 		if (rightExists())
 		{
 			averageParcels[1]++;
 			averageParcels[0] += ((Number) getRight().getValue()).doubleValue();
-			getRight().calculateAverageRecursive(averageParcels);
+			getRight().sumSubtrees(averageParcels);
 		}
 	}
 	
@@ -401,14 +410,6 @@ public class BinaryTree<T extends Comparable<T>> {
 			}
 			return;
 		}
-	}
-	
-	private boolean leftExists() {
-		return getLeft() != null;
-	}
-	
-	private boolean rightExists() {
-		return getRight() != null;
 	}
 
 	@Override

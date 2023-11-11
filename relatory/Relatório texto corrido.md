@@ -1,3 +1,4 @@
+
 <script
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
   type="text/javascript">
@@ -5,7 +6,7 @@
 
 # Implementação da Árvore
 
-A árvore binária de busca foi implementada utilizando apenas uma classe (BinaryTree). A classe possui um argumento de tipo genérico T, onde T é uma classe que herda da classe Comparable<T>. Isso é importante por que é através dessa classe que poderemos realizar comparações entre os elementos da árvore (através do método T1.compareTo(T2), que retorna -1 caso T1 < T2, 0 caso T1 = T2 e 1 caso T1 > T2). Para a execução do código apresentado neste trabalho, usaremos a classe _Integer_ no lugar do argumento T.
+A árvore binária de busca foi implementada utilizando apenas uma classe (BinaryTree). A classe possui um argumento de tipo genérico T, onde T é uma classe que herda da classe Comparable<T>. Isso é importante por que é através dessa classe que poderemos realizar comparações entre os elementos da árvore (através do método `T1.compareTo(T2)`, que retorna -1 caso `T1 < T2`, 0 caso `T1 = T2` e 1 caso `T1 > T2`). Para a execução do código apresentado neste trabalho, usaremos a classe _Integer_ no lugar do argumento T.
 
 Cada nó da árvore, representado por um objeto da classe _BinaryTree_ possui 7 atributos, todos de aceso restrito ao pacote _tree_ (que apenas contém a classe BinaryTree, até o momento de escrita deste documento). Estes são:
 
@@ -181,12 +182,157 @@ Isto posto, por ser um algoritmo que itera sobre os filhos do nó-alvo até obte
 
 Nessa secção, apresentaremos os algoritmos cuja implementação não foi explicitamente requisitada na especificação do projeto. 
 
-### 2.1. Encontrar o n-ésimo elemento: *findElementByIndex*
+### 2.1. Encontrar o n-ésimo elemento: `findElementByIndex(int n)`
 ---
 
-O algoritmo para encontrar o enésimo elemento que implementamos utiliza duas funções. o método wrapper **findElementByIndex(int n)** é a pública e serve para inicializar uma referência ao índice pretendido, enquanto o método privada **findElementByIndexRecursive(int n)** realiza a maior parte do trabalho. Como visto no código abaixo:
+O algoritmo para encontrar o enésimo elemento que implementamos utiliza duas funções. O método wrapper `findElementByIndex(int n)` é a chamada pública e serve para inicializar uma referência ao índice pretendido, enquanto o método privada **findElementByIndexRecursive(int n)** realiza a maior parte do trabalho. Como visto no código abaixo:
 
-Linhas 266 -> 285
+```java
+public T findElementByIndex(int n){
+	int n_[] = {n};
+	return findElementByIndexRecursive(n_);
+}
+```
+
+```java
+private T findElementByIndexRecursive(int n[])
+{
+	T v = null;
+	if (leftExists()) v = getLeft().findElementByIndexRecursive(n);
+	if (n[0] == 0) return v;
+
+	n[0] --;
+	if (n[0] == 0) return value;
+
+	if (rightExists()) v = getRight().findElementByIndexRecursive(n);
+	if (n[0] == 0) return v;
+
+	return null;
+}
+```
+
+O fluxo de execução do algorimto é bastante direto: percorrendo a árvore em ordem simétrica, o algoritmo checa de a referência ao objeto inicializado no método *wrapper* contém o valor 0. Caso contrário, o algoritmo continua a percorrer a árvore.
+
+Note que, para todos os casos, a complexidade desse algoritmo é dominada pela complexidade do percurso em órdem simétrica, uma vez que todos os nós da árvore precisam ser percorridos até que o $n-ésimo$ elemento seja encontrado. Logo, a complexidade do algoritmo é $O(min(n, x)) = O(n)$, onde $n$ é o índice buscado e $x$ é número de elementos na árvore.
+
+### 2.2. Encontrar o índice n de certo elemento: `findIndexByElement(T value)`
+
+A similaridade do nome deste método com o método anterior não é vã. De fato, ambos os algoritmos operam de maneira muito similar, percorrendo recursivamente a árvore em ordem simétrica e atualizando uma referência que indica o índice do valor, fato que pode ser constatado logo a seguir:
+
+```java
+public int findIndexByElement(T value){
+	int n_[] = {0};
+	return findIndexByElementRecursive(value, n_);
+}
+```
+
+```java
+private int findIndexByElementRecursive(T value, int n[]){
+	int i = 0;
+	if (leftExists()) i = getLeft().findIndexByElementRecursive(value, n);
+	if (n[0] == -1) return i;
+
+	n[0] ++;
+	if (this.value.compareTo(value) == 0)
+	{
+		int tmp = n[0];
+		n[0] = -1;
+		return tmp;
+	}
+
+	if (rightExists()) i = getRight().findIndexByElementRecursive(value, n);
+	if (n[0] == -1) return i;
+
+	return i;
+	}
+```
+
+Como esperado, a complexidade assintótica desse método também é dominada pelo percurso em órdem simétrica. Assim, temos que o algoritmo também é $O(n)$, pelos mesmos motivos que o algoritmo do item 2.1.
 
 
-Em suma, o algoritmo inicializa uma referência ao índice n e em seguida, inicializa uma variável do tipo T
+### 2.3. Obter a mediana da Árvore: `calculateMedian()`
+
+---
+
+O método para calcular a mediana é bastante simples, ainda mais que os anteriores. Dado que os nós possuem o número de subárvores em cada direção (esquerda e direita) armazenados em si, bastou que obtivéssemos calculássemos o índice da mediana (que é a metade do número de nós da árvore) e utilizássemos o supracitado método `findElementByIndex` para encontrar o elemento na posição esperada. Segue abaixo o código implementado:
+
+```java
+public T calculateMedian(){
+	int v = 1 + getChildAmount();	
+
+	v =  (v % 2 == 0) ? v = v/2 - 1 : v = v/2;
+
+	return findElementByIndex(v + 1);
+}
+``` 
+Perceba que o método `getChildAmount()` nada mais faz do que retornar a soma do número de nós à direita e à esquerda do nó atual. Assim, a complexidade desse algoritmo é inteiramente dominada pela complexidade do método `findElementByIndex`, ou seja, é $O(n)$ tal como ele.
+
+
+### 2.4. Obter a média da Árvore: `calculateAverage(T root)`
+
+---
+
+O algoritmo para calcular a média da árvore segundo a assinatura requisitada na especificação do projeto é dividido em 3 métodos. Para fins de elucidação da funcionalidade da tríade, mais vale que apresentemos os códigos antes de qualquer explicação mais rebuscada. Assim sendo, observemo-los:
+
+```java
+public double calculateAverage(T root) throws InvalidTargetObjectTypeException {
+	BinaryTree rt = search(root);
+	if (rt == null) return -1;
+	return rt.calculateAverage();
+}
+```
+
+Este primeiro código contém a assinatura pretendida para a função. Recebendo como argumento apenas o valor de um suposto elemento da árvore, esse algoritmo busca a subárvore que contém esse valor na sua raiz e, em seguida, chama o método `calculateAverage()` através do objeto da subárvore. Esse método será responsável por calcular a média da subárvore. Vale destacar que a declaração do lançamento da exceção refere-se à possibilidade da árvore armazenar elementos não númericos, como strings e outras árvores. Nesse caso, o método sempre retorna a exceção descrita.
+
+A complexidade do método acima, no seu pior caso (similar aos piores casos já descritos - onde cada nó da árvore possui um ou menos nós filhos) pode ser descrita da seguinte forma: seja $n$ o número de nós na árvore e seja $m$ o número de subnós da árvore que contém o valor passado como argumento da função. Disso, a complexidade $T(n)$ desse algoritmo é descrita pela equação $T(n) = U(n-m) + 2 + V(m)$, onde $U$ descreve a complexidade do método `search(T value)` no seu pior caso (ver item 1.1.), e $V$ descreve a complexidade do método calculateAverage, disposto logo abaixo:
+
+```java
+public double calculateAverage() throws InvalidTargetObjectTypeException{
+	if(!(this.getValue() instanceof Number)){
+		String s = "Can not calculate the average of non-numeric values and Class '" + this.getValue().getClass().getSimpleName() + "' cannot be asserted to a numerical type.";
+		throw new InvalidTargetObjectTypeException(s);
+	}
+
+	Double averageParcels[] = {((Number) this.getValue()).doubleValue()};
+	this.sumSubtrees(averageParcels);		
+	return averageParcels[0]/(1+getChildAmount());
+}
+```
+
+O método `calculateAverage()` não recebe argumentos e calcula a média do objeto `BinaryTree` que o chamou. O método pode ser caracterizado como um *wrapper* para o terceiro e último método deste quesito, uma vez que sua função é inicializar uma referência à um objeto que armazenará o somatório de todos os nós a partir do chamador e, após a realização das somas, dividir o total pela quantidade de nós que foram somados. O somatório é realizado recursivamente pelo método `sumSubtrees`, que recebe uma referência para o objeto que armazena o valor do somatório. Esse método pode ser visto abaixo.
+
+A complexidade desse método é definida pelo número de chamadas que a recursão `sumSubtrees` realizar. Assim sendo, descrevemos a complexidade $V(m)$ desse método como $V(m) = W(m) + 8$, onde $W$ é a complexidade do método `sumSubtrees`, exposto a seguir:
+
+```java
+private void sumSubtrees(Double averageParcels[]){
+	if (leftExists())
+	{
+		averageParcels[0] += ((Number)getLeft().getValue()).doubleValue();
+		getLeft().sumSubtrees(averageParcels);
+	}
+	if (rightExists())
+	{
+		averageParcels[0] += ((Number) getRight().getValue()).doubleValue();
+		getRight().sumSubtrees(averageParcels);
+	}
+}
+```
+
+A visibilidade privada desse método é objetiva garantir que ele não será utilizado fora do método `calculateAverage()`, onde não há a verificação de que os objetos armazenados na árvore sequer são "somáveis". Com isso em mente, o método percorre a árvore recursivamente em pré-ordem e adiciona os valores dos nós à referência `averageParcels[]`.
+
+Note que, uma vez que percorre todos os $m$ nós da árvore uma única vez, esse algoritmo tem complexidade linear, ou seja, $O(W(m)) = O(m)$. Para analisar a complexidade total da chamada do primeiro método apresentado nesse item (que também é a execução mais dispendiosa dentre os três), tomemos as três equações que apresentamos e poderemos perceber que a complexidade do primeiro método deste quesito, o `calculateAverage(T root)`, também é linear:
+
+Como $O(W(m)) = O(m)$, seja $c \in \mathbb{R}_{>0}$ tal que, eventualmente, $W(m) \leq cm$. Logo, note que:
+$$\begin{align*}
+W(m) \leq cm &\implies W(m) + 8 \leq cm + 8\\
+&\implies W(m) + 8 \leq 8c_1m \tag{Para todo $m \geq1 $}\\
+&\implies V(m) \leq 8cm\\
+&\implies V(m) = O(m)\\
+\end{align*}$$
+Analogamente, como $V(m) = O(m)$, temos $V(m) +2 = O(m)$. Disso, como pelo item 1.1. temos que $U$ é linear, note que:
+$$\begin{align*}
+T(n) = U(n-m) + 2 + V(m) &\implies T(n) = O(n-m) + O(m)\\
+&\implies T(n) = O(n -m + m)\\
+&\implies T(n) = O(n)\\
+\end{align*}$$
+Assim, obtemos que a complexidade $T(n)$ do método`calculateAverage(T root)`, realmente é linear.
