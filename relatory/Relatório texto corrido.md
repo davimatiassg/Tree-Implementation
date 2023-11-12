@@ -355,18 +355,117 @@ Como esperado, o algoritmo recursivo em questão é o método `completenessCheck
 
 ```java
 private void completenessCheck(boolean b[], int subTreeAmountGap)
+{
+	if (!b[0]) return;
+	int t = 0;
+	if(leftExists()){ t += getLeft().getHeight(); }
+	if(rightExists()){ t -= getRight().getHeight(); }
+	if(Math.abs(t) > heighGap) {
+		b[0] = false;
+		return;
+	}
+
+	if(leftExists()){ getLeft().completenessCheck(b, heighGap);}
+	if(rightExists()){ getRight().completenessCheck(b, heighGap);}
+}
+```
+
+O processo descrito pelo algoritmo consiste em verificar a quantidade de subárvores em cada um dos nós, recursivamente. A ideia central do algoritmo é, para cada nó da árvore verificar que a diferença entre as alturas dos nós filhos é 0. Em caso afirmativo, como é de se esperar o algoritmo deverá percorrer a árvore inteira até constatar esse fato, no último nível (pior caso). No caso contrário, o algoritmo interrompe a recurssão ao atribuir o valor `false` à referência passada, ativando a condição de parada na primeira linha do código.
+
+Visto que no seu pior caso o algoritmo percorre a árvore inteira uma única vez, a sua complexidade, definida na equação $T(n) = 2T(\frac{n}{2}) + 13$ é trivialmente linear (pelo 1º caso do teorema mestre).
+
+### 2.6 Verificar se a árvore é completa: `isComplete()`
+---
+
+O código para obter se uma árvore é completa é extremamente similar ao empregado na verificação se a árvore é cheia, a saber:
+
+```java
+public boolean isComplete() {
+	boolean b[] = {true};
+	completenessCheck(b, 1);
+	return b[0];
+}
+```
+
+A única alteração nesse código em relação ao anterior, além do nome, é que a chamada do método `completenessCheck` na linha 2 passa o valor 1 (e não 0, como no quesito anterior) para o argumento `heightGap` do método, indicando que pode haver uma diferença de altura de uma unidade entre os nós filhos de determinado nó da árvore, como é comum observarmos em árvores completas não-cheias.
+
+A complexidade deste algoritmo é idêntica à do quesito anterior.
+
+
+### 2.7 Impressão em préordem: `toStringPreOrder()`
+---
+
+Para realizar a impressão em pré-ordem da árvore, utilizamos o algoritmo padrão para esse tipo de acesso, como visto abaixo:
+
+```java
+public String toStringPreOrder()
 	{
-		if (!b[0]) return;
-		int t = 0;
-
-		if(leftExists()){t += getLeft().getEmptySubTreeAmount();}
-		if(rightExists()){t -= getRight().getEmptySubTreeAmount();}
-		if(t*t > subTreeAmountGap*subTreeAmountGap) {
-			b[0] = false;
-			return;
-		}
-
-		if(leftExists()){ getLeft().completenessCheck(b, subTreeAmountGap);}
-		if(rightExists()){ getRight().completenessCheck(b, subTreeAmountGap);}
+		String s = "";
+		s += " " + getValue().toString();
+		if (leftExists()) s += getLeft().toStringPreOrder();
+		if (rightExists()) s += getRight().toStringPreOrder();
+		return s;
 	}
 ```
+
+O algoritmo segue uma estrutura simples, que concatena a um objeto string os valores dos nós percorridos em pré-ordem para então retorna-lo. A complexidade desse algoritmo é linar, visto que é dominada pela complexidade do percurso.
+
+
+### 2.8 Impressão em formatos diferentes: `toString(int i)`
+---
+
+Para a realização da impressão, utilizamos o método `toString(int i)` responsável unicamente por chamar o método correspondente ao tipo de impressão requisitado. A saber:
+
+```java
+public String toString(int i){
+	String s = "BinaryTree\n" + "Root: " + this.getValue() + "\n";
+	if (i == 1) return showTreeDashes();
+	if (i == 2) return showTreeChain();
+	return s;
+	}
+```
+
+A impressão em hierarquia é feita pelo método `showTreeDashes()`, apresentado sob a seguinte forma:
+
+```java
+public String showTreeDashes(){ 
+	return showTreeDashes("", 
+	"_____________________________________________________"+
+	"_____________________________________________________"+
+	"_____________________________________________________");
+}
+
+```
+
+
+```java
+private String showTreeDashes(String spaces, String dashes) {
+	try{
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		String strV = df.format(value).toString();
+	} catch (Exception e) {}
+	
+	spaces += "     ";	
+	dashes = dashes.substring(0, dashes.length() - 5);
+	String s = spaces + strV + dashes.substring(0, dashes.length() - strV.length()) + "\n";
+	if(leftExists()) { s += leftTree.showTreeDashes(spaces, dashes); }
+	if(rightExists()) { s += rightTree.showTreeDashes(spaces, dashes); }
+	return s;
+}
+```
+
+Apesar da configuração um tanto carregada, o método possui um funcionamento bem simples. O algoritmo percorre a árvore em pré-ordem e, para cada chamda recursiva, adiciona série de espaços em branco, seguida do valor do nó no qual a chamada foi feita e uma sequência de traços que reduz seu tamanho de acordo. Existe também espaço para tratamento do tamanho dos valores exibidos, caso sejam valores numéricos.
+
+Para a impressão no formato 2, usando parêntesis, temos o método `showTreeChain()`, muito mais curto, descrito abaixo:
+
+```java
+public String showTreeChain(){
+	String s = "(" + this.getValue();
+	if(leftExists()) s += getLeft().showTreeChain();
+	if(rightExists()) s += getRight().showTreeChain();
+	return s+")";
+}
+```
+
+O método `showTreeChain()` apresenta de modo muito mais óbvio o percurso em pre-ordem que é desenvolvido nele. De fato, tanto esse método quanto o anterior (`showTreeDashes`) têm sua complexidade dominada pelo percurso, sendo portanto lineares.

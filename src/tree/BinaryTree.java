@@ -387,20 +387,19 @@ public class BinaryTree<T extends Comparable<T>> {
 		return b[0];
 	}
 	
-	private void completenessCheck(boolean b[], int subTreeAmountGap)
+	private void completenessCheck(boolean b[], int heightGap)
 	{
 		if (!b[0]) return;
 		int t = 0;
-
-		if(leftExists()){t += getLeft().getEmptySubTreeAmount();}
-		if(rightExists()){t -= getRight().getEmptySubTreeAmount();}
-		if(t*t > subTreeAmountGap*subTreeAmountGap) {
+		if(leftExists()){ t += getLeft().getHeight(); }
+		if(rightExists()){ t -= getRight().getHeight(); }
+		if(Math.abs(t) > heightGap) {
 			b[0] = false;
 			return;
 		}
 
-		if(leftExists()){ getLeft().completenessCheck(b, subTreeAmountGap);}
-		if(rightExists()){ getRight().completenessCheck(b, subTreeAmountGap);}
+		if(leftExists()){ getLeft().completenessCheck(b, heightGap);}
+		if(rightExists()){ getRight().completenessCheck(b, heightGap);}
 	}
 
 	@Override
@@ -430,9 +429,16 @@ public class BinaryTree<T extends Comparable<T>> {
 	"_____________________________________________________"); }
 	
 	private String showTreeDashes(String spaces, String dashes) {
-		DecimalFormat df = new DecimalFormat();
-		df.setMaximumFractionDigits(2);
-		String strV = df.format(value).toString();
+		String strV = value.toString();
+		try{
+			DecimalFormat df = new DecimalFormat();
+			df.setMaximumFractionDigits(2);
+			strV = df.format(value).toString();
+		} catch (Exception e)
+		{
+			//pass. The type is not numeric.
+		}
+		
 		spaces += "     ";	
 		dashes = dashes.substring(0, dashes.length() - 5);
 		String s = spaces + strV + dashes.substring(0, dashes.length() - strV.length()) + "\n";
@@ -457,14 +463,11 @@ public class BinaryTree<T extends Comparable<T>> {
 	public String toStringPreOrder()
 	{
 		String s = "";
-		return toStringPreOrderRecursive(s);
-	}
-
-	private String toStringPreOrderRecursive(String s)
-	{
 		s += " " + getValue().toString();
 		if (leftExists()) s += getLeft().toStringPreOrder();
 		if (rightExists()) s += getRight().toStringPreOrder();
 		return s;
 	}
+
+
 }

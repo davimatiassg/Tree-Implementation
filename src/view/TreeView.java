@@ -13,7 +13,7 @@ public class TreeView {
 		BinaryTree<Integer> tree = TreeReader.ReadBinaryTree(args[0]);
 		System.out.println(tree.showTreeDashesWithHeight());
 		
-		
+		System.out.println(tree.toStringPreOrder());
 		
 		CommandReader.readCommands(args[1], tree);
 		
