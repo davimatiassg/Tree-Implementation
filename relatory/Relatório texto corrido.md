@@ -336,3 +336,37 @@ T(n) = U(n-m) + 2 + V(m) &\implies T(n) = O(n-m) + O(m)\\
 &\implies T(n) = O(n)\\
 \end{align*}$$
 Assim, obtemos que a complexidade $T(n)$ do método`calculateAverage(T root)`, realmente é linear.
+
+
+### 2.5 Verificar se a árvore é cheia: `isFull()`
+---
+
+Para verificar se a árvore é cheia, isto é, se todas as suas folhas estão no último nível, implementamos um código de funcionamento similar aos que já apresentamos acima: o método `isFull()` inicializa uma referência a um objeto - desta vez um booleano - que será alterada conforme a progressão de um algoritmo recursivo. A implementação do `isFull()` é mostrada abaixo:
+
+```java
+public boolean isFull() {//Metal Alchemist
+	boolean b[] = {true};
+	completenessCheck(b, 0);
+	return b[0];
+}
+```
+
+Como esperado, o algoritmo recursivo em questão é o método `completenessCheck`. O processo de execução desse método é bastante interessante, principalmente considerando que ele será utilizado tanto neste quesito quanto no próximo. O código da implementação pode ser visto em seguida:
+
+```java
+private void completenessCheck(boolean b[], int subTreeAmountGap)
+	{
+		if (!b[0]) return;
+		int t = 0;
+
+		if(leftExists()){t += getLeft().getEmptySubTreeAmount();}
+		if(rightExists()){t -= getRight().getEmptySubTreeAmount();}
+		if(t*t > subTreeAmountGap*subTreeAmountGap) {
+			b[0] = false;
+			return;
+		}
+
+		if(leftExists()){ getLeft().completenessCheck(b, subTreeAmountGap);}
+		if(rightExists()){ getRight().completenessCheck(b, subTreeAmountGap);}
+	}
+```

@@ -8,35 +8,17 @@ import reader.CommandReader;
 
 public class TreeView {
 	
-	
-	
 	public static void main(String[] args) 
 	{
+		BinaryTree<Integer> tree = TreeReader.ReadBinaryTree(args[0]);
+		System.out.println(tree.showTreeDashesWithHeight());
 		
-		System.out.println(TreeReader.ReadBinaryTree(args[0]).showTreeDashesWithHeight());
 		
-		BinaryTree<Integer> tree = defaultBinaryTree();
-		
-		System.out.println(tree.toString(2));
-		
-		System.out.println(" ");
 		
 		CommandReader.readCommands(args[1], tree);
 		
 		System.out.println(" ");
 		
-		//System.out.println(tree.preOrder());
-		
-		//System.out.println(tree.enesimoElemento(6));
-		//
-		System.out.println(tree.calculateMedian());
-		
-		try {
-			System.out.println(tree.calculateAverage(50));
-		} catch (InvalidTargetObjectTypeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		System.out.println(tree.isFull());
 		System.out.println(tree.isComplete());
 		System.out.println(tree.showTreeDashesWithHeight());

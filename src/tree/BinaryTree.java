@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 
 import javax.management.modelmbean.InvalidTargetObjectTypeException;
 
+
 public class BinaryTree<T extends Comparable<T>> {
 	
 	T value;
@@ -99,7 +100,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		return rightNodes + leftNodes;
 	}
 	
-	private void incrementNodeCount(boolean isleft)
+	private void incrementNodeCount(boolean isLeft)
 	{
 		if (isLeft)
 		{
@@ -332,14 +333,14 @@ public class BinaryTree<T extends Comparable<T>> {
 	{
 		int v = 1 + getChildAmount();	
 
-		v =  (v % 2 == 0) ? v = v/2 - 1 : v = v/2;
+		v =  v%2 == 0 ? v/2 - 1 : v/2;
 
 		return findElementByIndex(v + 1);
 	}
 	
 	public double calculateAverage(T root) throws InvalidTargetObjectTypeException
 	{
-		BinaryTree rt = search(root);
+		BinaryTree<T> rt = search(root);
 		if (rt == null) return -1;
 		return rt.calculateAverage();
 	}
@@ -375,41 +376,31 @@ public class BinaryTree<T extends Comparable<T>> {
 	public boolean isFull() // MetalAlchemist
 	{
 		boolean b[] = {true};
-		isCompleteRecursive(b, true);
+		completenessCheck(b, 0);
 		return b[0];
 	}
 	
 	public boolean isComplete()
 	{
 		boolean b[] = {true};
-		isCompleteRecursive(b, false);
+		completenessCheck(b, 1);
 		return b[0];
 	}
 	
-	private void isCompleteRecursive(boolean b[], boolean checkForFull)
+	private void completenessCheck(boolean b[], int subTreeAmountGap)
 	{
 		if (!b[0]) return;
-		
-		if (leftExists() && rightExists()) {
-			getLeft().isCompleteRecursive(b, checkForFull);
-			getRight().isCompleteRecursive(b, checkForFull);
+		int t = 0;
+
+		if(leftExists()){t += getLeft().getEmptySubTreeAmount();}
+		if(rightExists()){t -= getRight().getEmptySubTreeAmount();}
+		if(t*t > subTreeAmountGap*subTreeAmountGap) {
+			b[0] = false;
 			return;
 		}
-		else {
-			if (leftExists() || rightExists()) { // one of them is missing, not ok
-			
-				if (!checkForFull)
-				{
-					if (leftExists()) if (getLeft().getEmptySubTreeAmount() != 2) b[0] = false;
-					if (rightExists()) if (getRight().getEmptySubTreeAmount() != 2) b[0] = false;
-				}
-				else {
-					b[0] = false;
-				}
-				return;
-			}
-			return;
-		}
+
+		if(leftExists()){ getLeft().completenessCheck(b, subTreeAmountGap);}
+		if(rightExists()){ getRight().completenessCheck(b, subTreeAmountGap);}
 	}
 
 	@Override
@@ -422,7 +413,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		String s = "BinaryTree\n" + "Root: " + this.getValue() + "\n";
 		if (i == 1) return showTreeDashes();
 		if (i == 2) return showTreeChain();
-		return "";
+		return s;
 	}
 
 	public String showTreeChain()

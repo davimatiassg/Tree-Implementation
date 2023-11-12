@@ -59,12 +59,12 @@ public class CommandReader {
 		}
 		
 		if (command.equals("IMPRIMA")) {
-			
 			if(arg == 1 || arg == 2) 
 			{
 				System.out.println(tree.toString(arg));
 			}
-			System.out.println("Argument not coherent with this command.");
+			else { System.out.println("Argument not coherent with this command."); }
+			
 		}
 		
 		if (command.equals("ENESIMO")) {
