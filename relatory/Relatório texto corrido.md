@@ -70,8 +70,7 @@ public Boolean add(T value)
 		{
 			setRight(nextTree);
 			rightNodes ++;
-		}
-		else{
+		}else{
 			setLeft(nextTree);
 			leftNodes ++;
 		}
