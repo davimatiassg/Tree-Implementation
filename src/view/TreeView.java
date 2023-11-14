@@ -11,56 +11,7 @@ public class TreeView {
 	public static void main(String[] args) 
 	{
 		BinaryTree<Integer> tree = TreeReader.ReadBinaryTree(args[0]);
-		System.out.println(tree.showTreeDashesWithHeight());
-		
-		System.out.println(tree.toStringPreOrder());
-		
 		CommandReader.readCommands(args[1], tree);
-		
-		System.out.println(" ");
-		
-		System.out.println(tree.isFull());
-		System.out.println(tree.isComplete());
-		System.out.println(tree.showTreeDashesWithHeight());
-		/*
-		
-		
-		
-		BinaryTree<Integer> search = tree.search(90);
-		System.out.println(search.toString()); 
-		*/
-		/*
-		System.out.println("Rm30");
-		BinaryTree<Integer> rm30 = defaultBinaryTree();
-		try {
-			rm30.remove(30);
-		} catch (Throwable e) {
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			e.printStackTrace();
-		}
-		System.out.println(rm30.toStringWithHeight());
-		
-		System.out.println("Rm40");
-		BinaryTree<Integer> rm40 = defaultBinaryTree();
-		try {
-			rm40.remove(40);
-		} catch (Throwable e) {
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			e.printStackTrace();
-		}
-		System.out.println(rm40.toStringWithHeight());
-		
-		System.out.println("Rm50");
-		BinaryTree<Integer> rm50 = defaultBinaryTree();
-		try {
-			rm50.remove(50);
-		} catch (Throwable e) {
-			System.out.println("AAAAAAAAAAAAAAA");
-			e.printStackTrace();
-		}
-		while(rm50.getRoot() != rm50) rm50 = rm50.getRoot();
-		System.out.println(rm50.toString());
-		*/
 	} 
 
 	public static BinaryTree<Integer> defaultBinaryTree()
@@ -74,9 +25,6 @@ public class TreeView {
 		t.add(65);
 		t.add(80);
 		t.add(90);
-		//t.add(100);
-		//t.add(101);
-		
 		return t;
 	}
 	
