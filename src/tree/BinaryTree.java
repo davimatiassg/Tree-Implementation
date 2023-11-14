@@ -136,35 +136,9 @@ public class BinaryTree<T extends Comparable<T>> {
 	{
 		if(t1 == null || t2 == null) return;
 		
-		BinaryTree<T> t1root = t1.getRoot();
-		BinaryTree<T> t2root = t2.getRoot();
-		BinaryTree<T> t1left = t1.getLeft();
-		BinaryTree<T> t2left = t2.getLeft();
-		BinaryTree<T> t1right = t1.getRight();
-		BinaryTree<T> t2right = t2.getRight();
-
-		if(t1.getValue().compareTo(t1root.getValue()) < 0) t1root.setLeft(t2);
-		else t1root.setRight(t2);
-
-		if(t2.getValue().compareTo(t2root.getValue()) < 0) t2root.setLeft(t1);
-		else t2root.setRight(t1);
-
-		t1.setRoot(t2root);
-		t2.setRoot(t1root);
-
-		t1.setLeft(t2left);
-		t2.setLeft(t1left);
-
-		t1.setRight(t2right);
-		t2.setRight(t1right);
-
-		if (t1.leftExists()) t1.getLeft().setRoot(t1);
-		if (t2.leftExists()) t2.getLeft().setRoot(t2);
-		if (t1.rightExists()) t1.getRight().setRoot(t1);
-		if (t2.rightExists()) t2.getRight().setRoot(t2);
-
-		if(t1.getRoot() == t2) t1.setRoot(t1);
-		if(t2.getRoot() == t1) t2.setRoot(t2);
+		T aux = t1.getValue();
+		t1.setValue(t2.getValue());
+		t2.setValue(aux);
 
 		t1.updateHeight();
 		t2.updateHeight();
@@ -245,7 +219,7 @@ public class BinaryTree<T extends Comparable<T>> {
 		case 0:
 			BinaryTree<T> eligible = findEligible(nextTree);
 			swapTree(eligible, nextTree);
-			nextTree.getRoot().removeChildTree(nextTree, nextTree.getValue().compareTo(nextTree.getRoot().getValue()) < 0);
+			eligible.getRoot().removeChildTree(eligible, eligible.getValue().compareTo(eligible.getRoot().getValue()) < 0);
 			return;
 		}
 	}
@@ -277,8 +251,8 @@ public class BinaryTree<T extends Comparable<T>> {
 	private int getEmptySubTreeAmount()
 	{
 		int amount = 0;
-		if (leftNodes == 0) amount ++;
-		if (rightNodes == 0) amount ++;
+		if (getLeft() == null) amount ++;
+		if (getRight() == null) amount ++;
 		return amount;
 	}
 
