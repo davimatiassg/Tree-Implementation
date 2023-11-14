@@ -1,10 +1,10 @@
 # Trabalho de EDB2
-Turma: *<T01>*
+Turma: *T01*
 ## Identificação Pessoal
-*<Carlos Eduardo Valle Rosa Filho>*
-	- *<carlosvallerosafilho@gmail.com>*
-*<Davi Matias Soares Genuino>*
-	- *<davimatiassg@gmail.com>*
+*Carlos Eduardo Valle Rosa Filho*
+	- *carlosvallerosafilho@gmail.com*
+*Davi Matias Soares Genuino*
+	- *davimatiassg@gmail.com*
 
 
 ## Instruções de compilação
@@ -21,5 +21,9 @@ Antes de realizar a execução do projeto, certifique-se de modificar, conforme 
 
 
 ### Pela linha de comando
-1. Na pasta raiz do projeto, execute o comando `javac -d ./bin -sourcepath . ./src/tree/*.java ./src/reader/*.java ./src/view/*.java` para compilar o projeto;
-2. Execute o projeto com `java ./bin/view/TreeView <caminho-para-arquivo-de-comandos> <caminho-para-arquivo-da-arvore>`.
+1. Na pasta raiz do projeto, execute o comando abaixo:
+<code>javac -d ./bin -sourcepath . ./src/tree/*.java ./src/reader/*.java ./src/view/*.java` para compilar o projeto </code>
+2. Vá até a pasta `bin`
+3. Execute o projeto com:
+<code>java ./bin/view/TreeView `<caminho-para-arquivo-de-comandos>` `<caminho-para-arquivo-da-arvore>` </code>.
+	- O padrão é <code>java view.TreeView ./../input/binaryTree.txt ./../input/commands.txt`.</code>
