@@ -1,4 +1,4 @@
-# Trabalho de EDB2
+# Trabalho de EDB2: Implementação de uma árvore binária de busca
 Turma: *T01*
 ## Identificação Pessoal
 *Carlos Eduardo Valle Rosa Filho*
@@ -6,10 +6,14 @@ Turma: *T01*
 *Davi Matias Soares Genuino*
 	- *davimatiassg@gmail.com*
 
+## Relatório
+
+Para acessar o relatório do projeto, contendo todos os métodos principais implementados, abra o arquivo `report/Relatorio.html`.
+
 
 ## Instruções de compilação
 
-Antes de realizar a execução do projeto, certifique-se de modificar, conforme desejado, os arquivos `<binaryTree>` e  `commands`, na pasta `./input/`. Eles contém respectivamente a especificação da árvore e dos comando a serem executados. Esses arquivos serão passados como argumentos para a execução do programa.
+Antes de realizar a execução do projeto, certifique-se de modificar, conforme desejado, os arquivos `binaryTree.txt` e  `commands.txt`, na pasta `./input/`. Eles contém respectivamente a especificação da árvore e dos comando a serem executados. Esses arquivos serão passados como argumentos para a execução do programa.
 
 ### Com Eclipse:
 1. Abra o projeto no eclipse normalmente;
